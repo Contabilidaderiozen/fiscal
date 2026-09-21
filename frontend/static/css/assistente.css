@@ -1,0 +1,270 @@
+/* ==========================================================================
+   ASSISTENTE FLUTUANTE — RIOZEN
+   Botao com o mascote (sprite animado) + painel de chat.
+   Usa as mesmas variaveis de cor do resto do sistema (base.css).
+   ========================================================================== */
+
+#assistente-riozen-raiz {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9999;
+  font-family: var(--font-sans, sans-serif);
+}
+
+/* ── Botao flutuante (fechado) ─────────────────────────────────────────── */
+.ar-botao {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: var(--surface, #1a2025);
+  border: 1px solid var(--border-strong, #3a444e);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+  touch-action: none;
+  user-select: none;
+}
+.ar-botao:hover { border-color: var(--accent, #2e8b74); }
+.ar-botao.ar-arrastando { cursor: grabbing; }
+.ar-botao img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  pointer-events: none;
+}
+
+.ar-fechar-avatar {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface-2, #212830);
+  border: 1px solid var(--border-strong, #3a444e);
+  color: var(--text-dim, #9aa3ab);
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+#assistente-riozen-raiz:hover .ar-fechar-avatar { opacity: 1; }
+.ar-fechar-avatar:hover { color: var(--danger, #c1503f); border-color: var(--danger, #c1503f); }
+
+.ar-reabrir {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface, #1a2025);
+  border: 1px solid var(--border-strong, #3a444e);
+  border-radius: 999px;
+  color: var(--text-dim, #9aa3ab);
+  font-size: 12px;
+  padding: 7px 13px 7px 9px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.ar-reabrir.visivel { display: flex; }
+.ar-reabrir img { width: 18px; height: 18px; object-fit: contain; }
+.ar-reabrir:hover { color: var(--accent-text, #a6ead9); border-color: var(--accent, #2e8b74); }
+
+.ar-badge-nao-lida {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--danger, #c1503f);
+  border: 2px solid var(--bg, #12161a);
+  display: none;
+}
+.ar-badge-nao-lida.visivel { display: block; }
+
+/* ── Painel de chat ─────────────────────────────────────────────────────── */
+.ar-painel {
+  position: absolute;
+  right: 0;
+  bottom: 78px;
+  width: 340px;
+  max-width: calc(100vw - 44px);
+  height: 460px;
+  max-height: calc(100vh - 140px);
+  min-width: 280px;
+  min-height: 320px;
+  background: var(--surface, #1a2025);
+  border: 1px solid var(--border, #2c343c);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  resize: both;
+}
+.ar-painel.aberto { display: flex; }
+/* Alça de redimensionar no cantinho, discreta e no tema escuro (webkit) */
+.ar-painel::-webkit-resizer {
+  background: linear-gradient(135deg, transparent 0 45%, var(--border-strong, #3a444e) 45% 55%, transparent 55% 100%);
+}
+
+.ar-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border, #2c343c);
+  background: var(--surface-2, #212830);
+}
+.ar-cabecalho .ar-avatar-mini {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.ar-cabecalho .ar-avatar-mini img { width: 100%; height: 100%; object-fit: contain; }
+.ar-cabecalho-texto { flex: 1; min-width: 0; }
+.ar-cabecalho-nome { font-size: 13.5px; font-weight: 600; color: var(--text, #e8eaed); }
+.ar-cabecalho-status { font-size: 11px; color: var(--text-faint, #626b73); }
+.ar-fechar {
+  background: none;
+  border: none;
+  color: var(--text-faint, #626b73);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+.ar-fechar:hover { color: var(--text, #e8eaed); }
+
+.ar-mensagens {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ar-msg {
+  max-width: 84%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ar-msg-assistente {
+  align-self: flex-start;
+  background: var(--surface-2, #212830);
+  color: var(--text, #e8eaed);
+  border: 1px solid var(--border, #2c343c);
+  border-bottom-left-radius: 2px;
+}
+.ar-msg-usuario {
+  align-self: flex-end;
+  background: var(--accent, #2e8b74);
+  color: #08201a;
+  font-weight: 500;
+  border-bottom-right-radius: 2px;
+}
+.ar-msg-fonte {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  color: var(--text-faint, #626b73);
+  margin-top: 4px;
+  letter-spacing: 0.03em;
+}
+
+.ar-digitando {
+  align-self: flex-start;
+  display: flex;
+  gap: 4px;
+  padding: 10px 12px;
+}
+.ar-digitando span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-faint, #626b73);
+  animation: ar-pulso 1.1s infinite ease-in-out;
+}
+.ar-digitando span:nth-child(2) { animation-delay: 0.15s; }
+.ar-digitando span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes ar-pulso {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* ── Menu de categorias (assunto) ──────────────────────────────────────── */
+.ar-menu-categorias {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-self: stretch;
+  margin-top: -2px;
+}
+.ar-chip-categoria {
+  text-align: left;
+  background: var(--surface-2, #212830);
+  border: 1px solid var(--border-strong, #3a444e);
+  border-radius: 8px;
+  color: var(--text, #e8eaed);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.ar-chip-categoria:hover {
+  border-color: var(--accent, #2e8b74);
+  background: var(--surface, #1a2025);
+}
+
+.ar-rodape {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--border, #2c343c);
+  background: var(--surface, #1a2025);
+}
+.ar-input {
+  flex: 1;
+  background: var(--surface-2, #212830);
+  border: 1px solid var(--border-strong, #3a444e);
+  border-radius: 8px;
+  color: var(--text, #e8eaed);
+  padding: 9px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  resize: none;
+}
+.ar-input:focus { border-color: var(--accent, #2e8b74); }
+.ar-enviar {
+  background: var(--accent, #2e8b74);
+  border: none;
+  border-radius: 8px;
+  color: #08201a;
+  font-weight: 600;
+  padding: 0 14px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.ar-enviar:hover { background: var(--accent-hover, #3aa688); }
+.ar-enviar:disabled { opacity: 0.5; cursor: default; }
+
+@media (max-width: 480px) {
+  .ar-painel { width: calc(100vw - 32px); right: -6px; resize: none; }
+}
