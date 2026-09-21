@@ -1,0 +1,72 @@
+{
+  "_LEIA_ME": "Troque cada 'COLOQUE_A_SENHA_AQUI' pela senha real do .pfx exportado. Os nomes de arquivo abaixo já batem com o que aparece na sua pasta certificados/ — se o Windows estiver escondendo a extensão .pfx, o nome real pode ser só 'MOITINHO_AUTOMOVEIS_LTDA_22134988000114' sem a extensão; nesse caso, adicione '.pfx' de verdade ao arquivo (renomear e digitar a extensão) ou remova '.pfx' daqui. A filial Toyota CAMPO GRANDE não tem certificado válido hoje (o único que existe está vencido), por isso não está na lista.",
+
+  "Toyota|PILARES": {
+    "cnpj": "22134988000114",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000114.pfx",
+    "senha": "123456"
+  },
+  "Toyota|TIJUCA": {
+    "cnpj": "22134988000203",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000203.pfx",
+    "senha": "123456"
+  },
+  "Toyota|BARRA - JARDIM OCEANICO": {
+    "cnpj": "22134988000467",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000467.pfx",
+    "senha": "123456"
+  },
+  "Toyota|JACAREPAGUA WP": {
+    "cnpj": "22134988000548",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000548.pfx",
+    "senha": "123456"
+  },
+  "Toyota|LEXUS": {
+    "cnpj": "22134988000629",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000629.pfx",
+    "senha": "123456"
+  },
+  "Toyota|ALVORADA": {
+    "cnpj": "22134988000700",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000700.pfx",
+    "senha": "123456"
+  },
+  "Toyota|RECREIO": {
+    "cnpj": "22134988000890",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000890.pfx",
+    "senha": "123456"
+  },
+
+  "BYD|JACAREPAGUA": {
+    "cnpj": "52752754000100",
+    "pfx": "MR RIO_AUTOMOVEIS_LTDA_52752754000100.pfx",
+    "senha": "12345678"
+  },
+  "BYD|CAMPO GRANDE": {
+    "cnpj": "52752754000282",
+    "pfx": "MR RIO_AUTOMOVEIS_LTDA_52752754000282.pfx",
+    "senha": "12345678"
+  },
+  "BYD|SAO JOAO DE MERITI": {
+    "cnpj": "52752754000363",
+    "pfx": "MR RIO_AUTOMOVEIS_LTDA_52752754000363.pfx",
+    "senha": "123456"
+  },
+  "BYD|BARRA MANSA": {
+    "cnpj": "52752754000444",
+    "pfx": "MR RIO_AUTOMOVEIS_LTDA_52752754000444.pfx",
+    "senha": "123456"
+  },
+
+  "Riozen|INTERMEDIACAO": {
+    "cnpj": "58489102000100",
+    "pfx": "RIOZEN_INTERMEDIACAO_DE_NEGOCIOS_LTDA_58489102000100.pfx",
+    "senha": "123456"
+  },
+
+  "Toyota|CAMPO GRANDE": {
+    "cnpj": "22134988000386",
+    "pfx": "MOITINHO_AUTOMOVEIS_LTDA_22134988000386.pfx",
+    "senha": "123456"
+  }
+}
