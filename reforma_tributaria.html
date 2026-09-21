@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reforma Tributária — Riozen</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ══════════════ CONTEÚDO (acesso direto, sem login) ══════════════ -->
+  <div id="app-conteudo" style="display:none;">
+
+  <header class="topo">
+    <div class="topo-marca-linha">
+      <div class="topo-marca"><span class="rz">RIOZEN</span></div>
+      <div class="usuario-conectado">
+        <span id="usuario-conectado-nome"></span>
+        <a href="/" title="Voltar para o painel principal">← Voltar ao Painel</a>
+      </div>
+    </div>
+    <h1>Reforma Tributária</h1>
+    <p class="topo-sub">Plano de ação e acompanhamento da transição — 2026 a 2033</p>
+
+    <div class="linha-tempo" id="linha-tempo-container" title="Clique pra ver por mês">
+      <div class="linha-tempo-anos" id="linha-tempo-anos">
+        <div class="linha-tempo-trilho">
+          <div class="linha-tempo-progresso" id="progresso-anos"></div>
+        </div>
+        <div class="linha-tempo-marcos" id="marcos-anos">
+          <span class="marco" data-ano="2026">2026</span>
+          <span class="marco" data-ano="2027">2027</span>
+          <span class="marco" data-ano="2028">2028</span>
+          <span class="marco" data-ano="2029">2029</span>
+          <span class="marco" data-ano="2030">2030</span>
+          <span class="marco" data-ano="2031">2031</span>
+          <span class="marco" data-ano="2032">2032</span>
+          <span class="marco" data-ano="2033">2033</span>
+        </div>
+      </div>
+      <div class="linha-tempo-meses" id="linha-tempo-meses" style="display:none;">
+        <div class="linha-tempo-trilho">
+          <div class="linha-tempo-progresso" id="progresso-meses"></div>
+        </div>
+        <div class="linha-tempo-marcos" id="marcos-meses"></div>
+      </div>
+      <p class="linha-tempo-dica" id="linha-tempo-dica">clique pra ver por mês ▾</p>
+      <div class="linha-tempo-tooltip" id="linha-tempo-tooltip"></div>
+    </div>
+  </header>
+
+  <nav class="abas-nav">
+    <button class="aba-nav ativa" data-alvo="aba-plano">Plano de Ação</button>
+    <button class="aba-nav" data-alvo="aba-2027">2026 → 2027</button>
+    <button class="aba-nav" data-alvo="aba-setores">Ferramentas por Setor</button>
+  </nav>
+
+  <main>
+    <section id="aba-plano" class="aba-conteudo ativa">
+
+      <div class="resumo">
+        <div class="resumo-pct" id="resumo-pct">0%</div>
+        <div class="resumo-corpo">
+          <div class="resumo-barra">
+            <div class="resumo-barra-preenchida" id="resumo-barra-preenchida" style="width:0%"></div>
+          </div>
+          <div class="resumo-legendas">
+            <span><b id="resumo-concluidas">0</b> concluídas</span>
+            <span><b id="resumo-andamento">0</b> em andamento</span>
+            <span><b id="resumo-pendentes">0</b> pendentes</span>
+            <span><b id="resumo-total">0</b> ações no total</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filtros">
+        <select id="filtro-setor"><option value="Todos">Todos os setores</option></select>
+        <select id="filtro-status">
+          <option value="Todos">Todos os status</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+        <button id="btn-resetar">Resetar progresso</button>
+      </div>
+
+      <div id="categorias"></div>
+
+    </section>
+
+    <section id="aba-2027" class="aba-conteudo">
+
+      <div class="contador-caixa">
+        <div class="contador-numero" id="contador-dias">—</div>
+        <div class="contador-legenda">dias até 01/01/2027 — data em que o regime atual de PIS/COFINS<br>
+          monofásico de veículos, autopeças e pneus deixa de valer</div>
+      </div>
+
+      <div class="ficha-secao destaque-mudanca">
+        <h3>🔴 O QUE MUDA — CONFIRMADO</h3>
+        <h4 class="subtitulo-card">PIS/COFINS Monofásico de Veículos, Autopeças e Pneus é revogado</h4>
+        <p class="texto-corpo">
+          A Lei nº 10.485/2002 (arts. 1º, 2º, 3º, 5º e 6º) — a mesma que usamos na Calculadora Fiscal pra
+          calcular o PIS/COFINS de hoje — foi <b>revogada pela Lei Complementar nº 214/2025, com efeitos a
+          partir de 01/01/2027</b>.
+        </p>
+        <p class="texto-corpo">
+          Na prática: hoje, veículos, autopeças e pneus pagam PIS/COFINS num regime concentrado, com alíquotas
+          específicas cobradas na fabricação/importação e 0% na revenda. A partir de 2027, esse regime deixa de
+          existir — a tributação desses itens passa a seguir só o modelo novo (IBS/CBS), sem o PIS/COFINS
+          separado que a Calculadora Fiscal mostra hoje na coluna "Hoje".
+        </p>
+      </div>
+
+      <div class="ficha-secao destaque-pendente">
+        <h3>🟢 ATUALIZAÇÃO — CBS 2027 JÁ TEM NÚMERO</h3>
+        <h4 class="subtitulo-card">Alíquota de referência: IBS 0,10% + CBS 8,4%</h4>
+        <p class="texto-corpo">
+          Em 25/08/2026, checamos direto na API oficial da Receita Federal
+          (piloto-cbs.tributos.gov.br) e o CBS de 2027 já aparece com número: <b>8,4%</b> — bem mais alto
+          que o 0,9% de teste de 2026. O IBS continua em <b>0,05% (UF) + 0,05% (Município) = 0,10%</b>,
+          igual já sabíamos pelo Informe Técnico 2025.002.
+        </p>
+        <p class="texto-corpo">
+          Esse valor é oficialmente chamado de <b>"alíquota de referência"</b> (Art. 18 da LC 214/2025) —
+          é o número que vale automaticamente se a União não legislar uma alíquota própria diferente pro
+          CBS. Na prática, costuma ficar bem perto do que vira lei de verdade, mas ainda não é 100%
+          definitivo. Vale conferir de novo mais perto de 2027.
+        </p>
+      </div>
+
+      <div class="ficha-secao">
+        <h3>AÇÕES DO PLANO LIGADAS A ESSA TRANSIÇÃO</h3>
+        <div id="acoes-2027-lista"></div>
+      </div>
+
+      <div class="ficha-secao">
+        <h3>SUGESTÕES DE PREPARAÇÃO (não é uma exigência formal — é um checklist prático)</h3>
+        <div class="checklist-item">
+          <span class="checklist-marca nao">☐</span>
+          <span class="checklist-texto"><b>Mapear os itens que hoje usam o regime monofásico</b>
+          <span>Levantar quais NCMs de veículos/autopeças/pneus a Riozen mais movimenta, usando a aba NCM do painel.</span></span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-marca nao">☐</span>
+          <span class="checklist-texto"><b>Confirmar o cClassTrib de cada item</b>
+          <span>Pra cada NCM importante, confirmar com o Fiscal qual cClassTrib vai se aplicar quando o monofásico sair.</span></span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-marca nao">☐</span>
+          <span class="checklist-texto"><b>Revisar contratos com fornecedores</b>
+          <span>Contratos que mencionem PIS/COFINS monofásico destacado precisam de cláusula de ajuste pra 2027.</span></span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-marca nao">☐</span>
+          <span class="checklist-texto"><b>Simular o impacto nos itens mais vendidos</b>
+          <span>Usar a Calculadora Fiscal (aba Ferramentas por Setor) item por item, pros produtos de maior giro.</span></span>
+        </div>
+        <div class="checklist-item">
+          <span class="checklist-marca nao">☐</span>
+          <span class="checklist-texto"><b>Confirmar com TI se o NBS já está preparado</b>
+          <span>Sistema precisa parar de aplicar o monofásico e já estar apto a registrar pelo cClassTrib certo.</span></span>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="aba-setores" class="aba-conteudo">
+      <div id="setores-grid-view">
+        <p class="topo-sub" style="margin-bottom:20px;">
+          Cada setor vai ganhar sua própria ferramenta de apoio aqui, conforme formos desenvolvendo.
+        </p>
+        <div class="setores-grid">
+          <div class="setor-card clicavel" data-ferramenta="fiscal"><h3>Fiscal</h3><p>Calculadora comparativa de carga tributária</p></div>
+          <div class="setor-card clicavel" data-ferramenta="compras"><h3>Compras</h3><p>Comparador de custo líquido por fornecedor</p></div>
+          <div class="setor-card clicavel" data-ferramenta="juridico"><h3>Jurídico</h3><p>Checklist — venda com isenção (taxista/PCD)</p></div>
+          <div class="setor-card clicavel" data-ferramenta="comercial"><h3>Comercial</h3><p>Simulador de comissão</p></div>
+          <div class="setor-card clicavel" data-ferramenta="pricing"><h3>Pricing</h3><p>Calculadora de formação de preço</p></div>
+          <div class="setor-card clicavel" data-ferramenta="ti"><h3>TI</h3><p>Checklist técnico por documento fiscal</p></div>
+          <div class="setor-card clicavel" data-ferramenta="financeiro"><h3>Financeiro</h3><p>Simulador de fluxo de caixa (split payment)</p></div>
+          <div class="setor-card"><h3>RH</h3><p>Em construção</p></div>
+          <div class="setor-card clicavel" data-ferramenta="controladoria"><h3>Controladoria</h3><p>Sugestão de plano de contas — CBS/IBS/IS</p></div>
+          <div class="setor-card clicavel" data-ferramenta="logistica"><h3>Logística</h3><p>Por que a localização importa menos agora</p></div>
+          <div class="setor-card clicavel" data-ferramenta="governanca"><h3>Governança</h3><p>Relatório de status pronto pra diretoria</p></div>
+        </div>
+      </div>
+
+      <!-- ══════════ FISCAL — Calculadora Comparativa ══════════ -->
+      <div id="ferramenta-fiscal" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Calculadora Comparativa de Carga Tributária</h2>
+        <p class="topo-sub">Compara o PIS/COFINS de hoje (veículos, autopeças e pneus) com o IBS/CBS da fase de
+          teste de 2026. <b>Cobertura:</b> só os NCMs mapeados no regime monofásico da Lei 10.485/2002.</p>
+
+        <div class="ficha-secao">
+          <h3>1. VALOR DA OPERAÇÃO</h3>
+          <input type="number" id="calc-fiscal-valor" class="input-ferramenta" placeholder="Valor de venda (R$)" min="0" step="0.01">
+        </div>
+
+        <div class="ficha-secao">
+          <h3>2. NCM — REGIME DE HOJE</h3>
+          <input type="text" id="calc-fiscal-ncm-busca" class="input-ferramenta" placeholder="Digite o NCM (com ou sem ponto) ou parte da descrição">
+          <div id="calc-fiscal-ncm-lista" class="lista-resultados-compacta"></div>
+          <div id="calc-fiscal-ncm-selecionado" class="selecionado-box"></div>
+          <label class="rotulo-campo" style="margin-top:12px;">Situação do veículo/item</label>
+          <select id="calc-fiscal-situacao" class="input-ferramenta">
+            <option value="novo">Novo</option>
+            <option value="usado">Usado (inclusive ex-test-drive/frota)</option>
+          </select>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>3. cClassTrib — REGIME DA REFORMA (FASE DE TESTE 2026)</h3>
+          <input type="text" id="calc-fiscal-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+          <div id="calc-fiscal-cct-lista" class="lista-resultados-compacta"></div>
+          <div id="calc-fiscal-cct-selecionado" class="selecionado-box"></div>
+        </div>
+
+        <div id="calc-fiscal-resultado"></div>
+      </div>
+
+      <!-- ══════════ PRICING — Formação de Preço ══════════ -->
+      <div id="ferramenta-pricing" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Calculadora de Formação de Preço</h2>
+        <p class="topo-sub">Mostra o preço de venda necessário pra manter a margem desejada, hoje e na fase de
+          teste da reforma (2026) — mesma cobertura da calculadora Fiscal.</p>
+
+        <div class="ficha-secao">
+          <h3>1. CUSTO E MARGEM</h3>
+          <div class="grid-2col">
+            <div><label class="rotulo-campo">Custo do produto (R$)</label>
+              <input type="number" id="calc-pricing-custo" class="input-ferramenta" min="0" step="0.01"></div>
+            <div><label class="rotulo-campo">Margem desejada (%)</label>
+              <input type="number" id="calc-pricing-margem" class="input-ferramenta" min="0" max="99" step="0.1"></div>
+          </div>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>2. NCM — REGIME DE HOJE</h3>
+          <input type="text" id="calc-pricing-ncm-busca" class="input-ferramenta" placeholder="Digite o NCM (com ou sem ponto) ou parte da descrição">
+          <div id="calc-pricing-ncm-lista" class="lista-resultados-compacta"></div>
+          <div id="calc-pricing-ncm-selecionado" class="selecionado-box"></div>
+          <label class="rotulo-campo" style="margin-top:12px;">Situação do veículo/item</label>
+          <select id="calc-pricing-situacao" class="input-ferramenta">
+            <option value="novo">Novo</option>
+            <option value="usado">Usado (inclusive ex-test-drive/frota)</option>
+          </select>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>3. cClassTrib — REGIME DA REFORMA (FASE DE TESTE 2026)</h3>
+          <input type="text" id="calc-pricing-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+          <div id="calc-pricing-cct-lista" class="lista-resultados-compacta"></div>
+          <div id="calc-pricing-cct-selecionado" class="selecionado-box"></div>
+        </div>
+
+        <div id="calc-pricing-resultado"></div>
+      </div>
+
+      <!-- ══════════ TI — Checklist Técnico ══════════ -->
+      <div id="ferramenta-ti" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Checklist Técnico por Documento Fiscal</h2>
+        <p class="topo-sub">Escolhe um cClassTrib e vê quais grupos de campos o XML precisa ter, e em quais
+          documentos fiscais esse código é aceito.</p>
+
+        <div class="ficha-secao">
+          <h3>cClassTrib</h3>
+          <input type="text" id="calc-ti-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib, o CST ou parte da descrição">
+          <div id="calc-ti-cct-lista" class="lista-resultados-compacta"></div>
+        </div>
+
+        <div id="calc-ti-resultado"></div>
+      </div>
+
+      <!-- ══════════ GOVERNANÇA — Relatório de Status ══════════ -->
+      <div id="ferramenta-governanca" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores no-print">← Voltar pros setores</button>
+        <div class="relatorio-acoes no-print">
+          <h2 class="ferramenta-titulo" style="display:inline-block;">Relatório de Status</h2>
+          <button id="btn-imprimir-relatorio" class="login-botao" style="width:auto; padding:9px 20px; margin-left:16px;">Imprimir / Salvar PDF</button>
+        </div>
+        <div id="relatorio-corpo"></div>
+      </div>
+
+      <!-- ══════════ COMPRAS — Comparador de Custo Líquido ══════════ -->
+      <div id="ferramenta-compras" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Comparador de Custo Líquido por Fornecedor</h2>
+        <p class="topo-sub">Compara dois fornecedores do mesmo item considerando o crédito tributário recuperável
+          de cada um — o preço de tabela mais baixo nem sempre é o custo real mais baixo.</p>
+
+        <div class="ficha-secao destaque-pendente">
+          <p class="texto-corpo" style="margin:0;">
+            <b>Atualizado com a LC 214/2025, Art. 47, §9º:</b> fornecedor do Simples Nacional
+            <b>não significa mais "sem crédito" ou "crédito menor" por padrão</b>. A Riozen (regime
+            regular) tem direito a um crédito equivalente ao valor que o fornecedor efetivamente
+            recolheu através do Simples — que pode estar bem mais perto do crédito normal do que se
+            imagina.
+          </p>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>NÃO SABE QUAL % USAR? GUIA RÁPIDO</h3>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">•</span>
+            <span class="checklist-texto"><b>É veículo, autopeça, pneu ou acessório original (ex: retrovisor, para-choque)?</b>
+            <span>Busca o NCM em cada fornecedor abaixo — se for um item que já mapeamos, a ferramenta
+            sugere o % automaticamente.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">•</span>
+            <span class="checklist-texto"><b>É produto de loja/acessório de marca à venda (caneca, boné, camisa, squeeze,
+            garrafa térmica, cama de pet, etc.)?</b>
+            <span>Nenhum desses tem regime especial de PIS/COFINS — pode usar direto <b>9,25%</b> (fornecedor
+            Regime Normal), sem precisar nem buscar o NCM (às vezes o nome oficial do NCM é bem diferente do
+            nome do produto, tipo "artigos de louça" em vez de "caneca").</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">•</span>
+            <span class="checklist-texto"><b>Fornecedor de Regime Normal, outro item comum (fora do regime monofásico)</b>
+            <span>Ponto de partida típico hoje: 9,25% (PIS 1,65% + COFINS 7,6%, regime não-cumulativo padrão)
+            — mas confirme se o item tem alguma regra específica.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">•</span>
+            <span class="checklist-texto"><b>Fornecedor do Simples Nacional</b>
+            <span>Não existe um % fixo — varia pelo anexo do Simples e pela faixa de faturamento do
+            fornecedor. Não dá pra chutar com segurança: peça pro fornecedor informar o valor exato
+            recolhido nessa nota, ou confirme com o Fiscal.</span></span>
+          </div>
+        </div>
+
+        <div class="resultado-comparativo">
+          <div class="ficha-secao">
+            <h3>FORNECEDOR A</h3>
+            <label class="rotulo-campo">Preço de tabela (R$)</label>
+            <input type="number" id="compras-preco-a" class="input-ferramenta" min="0" step="0.01">
+            <label class="rotulo-campo" style="margin-top:12px;">Regime do fornecedor</label>
+            <select id="compras-regime-a" class="input-ferramenta">
+              <option value="normal">Regime Normal</option>
+              <option value="simples">Simples Nacional</option>
+            </select>
+            <label class="rotulo-campo" style="margin-top:12px;">NCM do item (opcional — pra sugerir o %)</label>
+            <input type="text" id="compras-ncm-busca-a" class="input-ferramenta" placeholder="Digite o NCM ou parte da descrição">
+            <div id="compras-ncm-lista-a" class="lista-resultados-compacta"></div>
+            <div id="compras-ncm-selecionado-a" class="selecionado-box"></div>
+            <label class="rotulo-campo" style="margin-top:12px;">% de crédito recuperável sobre o preço</label>
+            <input type="number" id="compras-aliq-a" class="input-ferramenta" min="0" max="100" step="0.01" placeholder="Confirme com o fornecedor — não presuma 0%">
+          </div>
+          <div class="ficha-secao">
+            <h3>FORNECEDOR B</h3>
+            <label class="rotulo-campo">Preço de tabela (R$)</label>
+            <input type="number" id="compras-preco-b" class="input-ferramenta" min="0" step="0.01">
+            <label class="rotulo-campo" style="margin-top:12px;">Regime do fornecedor</label>
+            <select id="compras-regime-b" class="input-ferramenta">
+              <option value="normal">Regime Normal</option>
+              <option value="simples">Simples Nacional</option>
+            </select>
+            <label class="rotulo-campo" style="margin-top:12px;">NCM do item (opcional — pra sugerir o %)</label>
+            <input type="text" id="compras-ncm-busca-b" class="input-ferramenta" placeholder="Digite o NCM ou parte da descrição">
+            <div id="compras-ncm-lista-b" class="lista-resultados-compacta"></div>
+            <div id="compras-ncm-selecionado-b" class="selecionado-box"></div>
+            <label class="rotulo-campo" style="margin-top:12px;">% de crédito recuperável sobre o preço</label>
+            <input type="number" id="compras-aliq-b" class="input-ferramenta" min="0" max="100" step="0.01" placeholder="Confirme com o fornecedor — não presuma 0%">
+          </div>
+        </div>
+
+        <div id="compras-resultado"></div>
+
+        <div class="aviso-calibragem">
+          Você informa o % de crédito recuperável de cada fornecedor (isso varia por estado/NCM/regime —
+          confirme com o Fiscal qual alíquota usar em cada caso). A ferramenta só faz a conta pra comparar.
+        </div>
+      </div>
+
+      <!-- ══════════ COMERCIAL — Simulador de Comissão ══════════ -->
+      <div id="ferramenta-comercial" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Comercial</h2>
+
+        <div class="sub-nav-ferramenta">
+          <button class="sub-nav-btn ativo" data-subaba="comercial-comissao-view">Simulador de Comissão</button>
+          <button class="sub-nav-btn" data-subaba="comercial-seminovo-view">Venda de Seminovo</button>
+          <button class="sub-nav-btn" data-subaba="comercial-cf-view">Comissão Consórcio/Financiamento</button>
+        </div>
+
+        <div id="comercial-comissao-view" class="sub-conteudo">
+          <p class="topo-sub">Mostra como a comissão do vendedor muda se a base de cálculo passar a ser o valor
+            líquido de impostos (sem o IBS/CBS destacado) em vez do valor total da nota.</p>
+
+          <div class="ficha-secao">
+            <h3>DADOS DA VENDA</h3>
+            <div class="grid-2col">
+              <div><label class="rotulo-campo">Valor total da venda (R$)</label>
+                <input type="number" id="comercial-valor" class="input-ferramenta" min="0" step="0.01"></div>
+              <div><label class="rotulo-campo">% de comissão</label>
+                <input type="number" id="comercial-comissao" class="input-ferramenta" min="0" max="100" step="0.01"></div>
+            </div>
+          </div>
+
+          <div class="ficha-secao">
+            <h3>cClassTrib — PARA CALCULAR O IMPOSTO DESTACADO (FASE DE TESTE 2026)</h3>
+            <input type="text" id="comercial-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+            <div id="comercial-cct-lista" class="lista-resultados-compacta"></div>
+            <div id="comercial-cct-selecionado" class="selecionado-box"></div>
+          </div>
+
+          <div id="comercial-resultado"></div>
+        </div>
+
+        <div id="comercial-seminovo-view" class="sub-conteudo" style="display:none;">
+          <p class="topo-sub">A partir de 2027, a venda de veículo usado (ex-test-drive/frota ou seminovo
+            comprado usado) não é tributada sobre o valor total — só sobre a <b>diferença entre o preço de
+            venda e o valor de aquisição</b> (Art. 406 e 407 da LC 214/2025).</p>
+
+          <div class="ficha-secao">
+            <h3>DADOS DA OPERAÇÃO</h3>
+            <div class="grid-2col">
+              <div><label class="rotulo-campo">Valor de venda (R$)</label>
+                <input type="number" id="seminovo-venda" class="input-ferramenta" min="0" step="0.01"></div>
+              <div><label class="rotulo-campo">Valor de aquisição (R$)</label>
+                <input type="number" id="seminovo-aquisicao" class="input-ferramenta" min="0" step="0.01"></div>
+            </div>
+            <label class="rotulo-campo" style="margin-top:12px;">De quem a Riozen comprou esse veículo?</label>
+            <select id="seminovo-origem" class="input-ferramenta">
+              <option value="pj">Pessoa Jurídica (outra empresa/concessionária)</option>
+              <option value="pf">Pessoa Física (particular)</option>
+            </select>
+          </div>
+
+          <div class="ficha-secao">
+            <h3>cClassTrib — ALÍQUOTA EFETIVA (2027, ALÍQUOTA DE REFERÊNCIA)</h3>
+            <input type="text" id="seminovo-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+            <div id="seminovo-cct-lista" class="lista-resultados-compacta"></div>
+            <div id="seminovo-cct-selecionado" class="selecionado-box"></div>
+          </div>
+
+          <div id="seminovo-resultado"></div>
+        </div>
+
+        <div id="comercial-cf-view" class="sub-conteudo" style="display:none;">
+          <p class="topo-sub">Comissão que a Riozen recebe ao indicar cliente pro financiamento ou consórcio.
+            O tratamento tributário é diferente entre os dois — consórcio segue regra própria de base de
+            cálculo (Art. 204 da LC 214/2025, regime de caixa), financiamento segue o regime normal de
+            serviço — mas o <b>código cClassTrib usado na nota é o mesmo nos dois casos: 000001</b> (regra
+            geral), já preenchido automaticamente abaixo.</p>
+
+          <div class="ficha-secao">
+            <h3>DADOS DA COMISSÃO</h3>
+            <label class="rotulo-campo">Tipo</label>
+            <select id="cf-tipo" class="input-ferramenta">
+              <option value="consorcio">Consórcio</option>
+              <option value="financiamento">Financiamento</option>
+            </select>
+            <label class="rotulo-campo" style="margin-top:12px;">Parceiro (opcional, só pra sua referência)</label>
+            <input type="text" id="cf-parceiro" class="input-ferramenta" placeholder="Ex: Rodobens, Banco Toyota, ou outro">
+            <label class="rotulo-campo" style="margin-top:12px;">Valor da comissão recebida (R$)</label>
+            <input type="number" id="cf-valor" class="input-ferramenta" min="0" step="0.01">
+          </div>
+
+          <div class="ficha-secao">
+            <h3>cClassTrib — ALÍQUOTA EFETIVA (2026 E 2027)</h3>
+            <p class="texto-corpo" style="margin:0 0 10px;">Preenchido automaticamente com o código padrão
+              (000001) — não achamos um código de redução específico pra comissão de consórcio/financiamento
+              na tabela oficial. Pode trocar a busca abaixo se precisar usar outro código.</p>
+            <input type="text" id="cf-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+            <div id="cf-cct-lista" class="lista-resultados-compacta"></div>
+            <div id="cf-cct-selecionado" class="selecionado-box"></div>
+          </div>
+
+          <div id="cf-resultado"></div>
+        </div>
+      </div>
+
+      <!-- ══════════ FINANCEIRO — Simulador de Fluxo de Caixa ══════════ -->
+      <div id="ferramenta-financeiro" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Simulador de Fluxo de Caixa — Split Payment</h2>
+        <p class="topo-sub">No modelo novo, o imposto (IBS/CBS) é retido e recolhido <b>no momento do
+          pagamento</b>, direto pro governo — não fica mais em caixa até a apuração do mês. Isso muda o
+          capital de giro disponível.</p>
+
+        <div class="ficha-secao">
+          <h3>DADOS DA VENDA</h3>
+          <div class="grid-2col">
+            <div><label class="rotulo-campo">Valor da venda (R$)</label>
+              <input type="number" id="financeiro-valor" class="input-ferramenta" min="0" step="0.01"></div>
+            <div><label class="rotulo-campo">Prazo médio de apuração/recolhimento hoje (dias)</label>
+              <input type="number" id="financeiro-prazo" class="input-ferramenta" min="0" step="1" value="35"></div>
+          </div>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>NCM — REGIME DE HOJE (PIS/COFINS)</h3>
+          <input type="text" id="financeiro-ncm-busca" class="input-ferramenta" placeholder="Digite o NCM (com ou sem ponto) ou parte da descrição">
+          <div id="financeiro-ncm-lista" class="lista-resultados-compacta"></div>
+          <div id="financeiro-ncm-selecionado" class="selecionado-box"></div>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>cClassTrib — ALÍQUOTA EFETIVA (FASE DE TESTE 2026 E 2027)</h3>
+          <input type="text" id="financeiro-cct-busca" class="input-ferramenta" placeholder="Digite o código cClassTrib ou parte da descrição">
+          <div id="financeiro-cct-lista" class="lista-resultados-compacta"></div>
+          <div id="financeiro-cct-selecionado" class="selecionado-box"></div>
+        </div>
+
+        <div id="financeiro-resultado"></div>
+
+        <div class="aviso-calibragem">
+          Simulação simplificada — mostra só o efeito de <i>timing</i> do split payment sobre o valor do
+          imposto, não substitui uma projeção completa de fluxo de caixa.
+        </div>
+      </div>
+
+      <!-- ══════════ CONTROLADORIA — Sugestão de Plano de Contas ══════════ -->
+      <div id="ferramenta-controladoria" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Controladoria</h2>
+
+        <div class="sub-nav-ferramenta">
+          <button class="sub-nav-btn ativo" data-subaba="controladoria-contas-view">Plano de Contas</button>
+          <button class="sub-nav-btn" data-subaba="controladoria-estoque-view">Crédito de Estoque 2027</button>
+        </div>
+
+        <div id="controladoria-contas-view" class="sub-conteudo">
+          <p class="topo-sub">Modelo de contas novas pra contabilizar a Reforma Tributária — é um ponto de
+            partida pra adaptar com o contador, não uma tabela oficial.</p>
+          <div id="controladoria-contas"></div>
+        </div>
+
+        <div id="controladoria-estoque-view" class="sub-conteudo" style="display:none;">
+          <p class="topo-sub">Todo veículo, autopeça ou pneu em estoque em 01/01/2027 (comprado sob o regime
+            monofásico de hoje) dá direito a um crédito presumido de <b>9,25% sobre o valor do estoque</b> —
+            Art. 381 da LC 214/2025. Precisa ser apurado até junho/2027, liberado em 12 parcelas mensais
+            iguais, só compensável com CBS.</p>
+
+          <div class="ficha-secao">
+            <h3>VALOR DO ESTOQUE EM 31/12/2026</h3>
+            <input type="number" id="estoque-valor" class="input-ferramenta" min="0" step="0.01"
+              placeholder="Valor total de veículos/autopeças/pneus em estoque (R$)">
+          </div>
+
+          <div id="estoque-resultado"></div>
+
+          <div class="aviso-calibragem">
+            Só se aplica a bens novos, adquiridos de pessoa jurídica domiciliada no país ou importados pra
+            revenda — não vale pra bens usados, bens do ativo imobilizado, nem imóveis (Art. 381, §1º).
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ LOGÍSTICA — Localização Importa Menos ══════════ -->
+      <div id="ferramenta-logistica" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Por Que a Localização Importa Menos Agora</h2>
+        <p class="topo-sub">Simulação conceitual: mostra como o ICMS de hoje (cobrado na origem) cria incentivo
+          pra localizar centros de distribuição em certos estados, e por que isso muda com o IBS (cobrado no
+          destino).</p>
+
+        <div class="ficha-secao">
+          <h3>CENÁRIO ILUSTRATIVO</h3>
+          <div class="grid-2col">
+            <div><label class="rotulo-campo">Estado de origem (onde fica o CD/fábrica)</label>
+              <select id="logistica-origem" class="input-ferramenta">
+                <option value="17">Estado com incentivo — ICMS efetivo ~17% menor na saída</option>
+                <option value="0">Estado sem incentivo — ICMS cheio</option>
+              </select>
+            </div>
+            <div><label class="rotulo-campo">Valor da mercadoria (R$)</label>
+              <input type="number" id="logistica-valor" class="input-ferramenta" min="0" step="0.01" value="100000"></div>
+          </div>
+        </div>
+
+        <div id="logistica-resultado"></div>
+      </div>
+
+      <!-- ══════════ JURÍDICO — Isenção Taxista/PCD ══════════ -->
+      <div id="ferramenta-juridico" class="ferramenta-view" style="display:none;">
+        <button class="btn-voltar-lista btn-voltar-setores">← Voltar pros setores</button>
+        <h2 class="ferramenta-titulo">Jurídico</h2>
+
+        <div class="sub-nav-ferramenta">
+          <button class="sub-nav-btn ativo" data-subaba="juridico-isencao-view">Checklist Isenção Taxista/PCD</button>
+          <button class="sub-nav-btn" data-subaba="juridico-clausulas-view">Biblioteca de Cláusulas</button>
+          <button class="sub-nav-btn" data-subaba="juridico-revisao-view">Checklist de Revisão de Contrato</button>
+        </div>
+
+        <div id="juridico-isencao-view" class="sub-conteudo">
+        <p class="topo-sub">A partir de 2027, o mecanismo de isenção de IBS/CBS pra taxista e PCD muda um pouco
+          das regras atuais de ICMS/IPI — esse checklist resume os pontos técnicos (Art. 149, 150, 152 e 155 da
+          LC 214/2025).</p>
+
+        <div class="ficha-secao destaque-mudanca">
+          <p class="texto-corpo" style="margin:0;">
+            <b>Código a usar na nota fiscal dessa venda: cClassTrib 200015</b> — confirmado direto na tabela
+            oficial: 100% de redução em IBS e 100% em CBS (isenção completa), vinculado especificamente ao
+            Art. 149. Pode buscar "200015" na ferramenta de NCM e cClassTrib do painel pra ver todos os
+            detalhes.
+          </p>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>REQUISITO GERAL — VALE PROS DOIS CASOS</h3>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Fabricação nacional</b>
+            <span>Carro importado não se qualifica pra essa isenção, em nenhum dos dois casos.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Mínimo 4 portas</b>
+            <span>Automóvel de passageiros com 4 portas ou mais.</span></span>
+          </div>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>TAXISTA (MOTORISTA PROFISSIONAL LICENCIADO)</h3>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Motorização</b>
+            <span>Só vale se o carro for elétrico, OU motor até 2.000cm³ com combustível renovável, flex ou
+            híbrido — motor a combustão "puro" acima disso não se qualifica.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Intervalo mínimo entre compras</b>
+            <span>2 anos — contados da aquisição anterior com o mesmo benefício.</span></span>
+          </div>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>PCD (DEFICIÊNCIA FÍSICA, AUDITIVA, VISUAL, MENTAL SEVERA OU TEA)</h3>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Limite de preço</b>
+            <span>Até R$200.000 — o benefício fiscal em si fica limitado aos primeiros R$100.000 do valor.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Intervalo mínimo entre compras</b>
+            <span>3 anos — contados da aquisição anterior com o mesmo benefício.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca sim">☑</span>
+            <span class="checklist-texto"><b>Comprador</b>
+            <span>Compra deve ser feita diretamente pela pessoa com deficiência ou por representante legal —
+            que fica solidariamente responsável se o imposto deixar de ser pago indevidamente.</span></span>
+          </div>
+        </div>
+
+        <div class="ficha-secao destaque-mudanca">
+          <h3>⚠️ ATENÇÃO NA TROCA/RECOMPRA DESSES VEÍCULOS</h3>
+          <p class="texto-corpo" style="margin:0;">
+            Se um desses carros for revendido <b>antes</b> do prazo mínimo (2 ou 3 anos) pra alguém que
+            <b>não</b> tem o mesmo direito, quem vendeu — a pessoa, não a concessionária — precisa pagar o
+            imposto que foi dispensado, com multa e juros. Vale checar a data de aquisição original antes de
+            aceitar um veículo desses numa troca, pra evitar dúvida na negociação. Exceções: perda total/roubo
+            (seguradora), falecimento do beneficiário, ou alienação fiduciária em garantia.
+          </p>
+        </div>
+        </div>
+
+        <div id="juridico-clausulas-view" class="sub-conteudo" style="display:none;">
+        <p class="topo-sub">Modelos de cláusula pra adaptar com o Jurídico antes de usar num contrato de
+          verdade — cada uma cita a base legal exata que já levantamos na LC 214/2025. Clique em "Copiar" pra
+          levar o texto pronto.</p>
+
+        <div class="ficha-secao">
+          <h3>1. REVISÃO POR ALTERAÇÃO TRIBUTÁRIA</h3>
+          <p class="texto-corpo">Use em qualquer contrato de longa duração que atravesse a transição
+            (2026-2033) — fornecedor, parceria, aluguel, prestação de serviço continuada.</p>
+          <div class="clausula-texto" id="clausula-1">CLÁUSULA — DA REVISÃO POR ALTERAÇÃO TRIBUTÁRIA
+Considerando o período de transição da Reforma Tributária instituída pela Emenda Constitucional nº 132/2023 e regulamentada pela Lei Complementar nº 214/2025, que se estende até o ano de 2033, as partes acordam que, na hipótese de alteração das alíquotas de IBS, CBS ou Imposto Seletivo aplicáveis ao objeto deste contrato, os preços e/ou condições ora pactuados poderão ser revistos mediante notificação prévia de 30 (trinta) dias, de modo a preservar o equilíbrio econômico-financeiro original da avença.</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-1">📋 Copiar</button>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>2. RESPONSABILIDADE TRIBUTÁRIA (IBS/CBS)</h3>
+          <p class="texto-corpo">Use pra deixar claro, em qualquer contrato de compra e venda ou prestação de
+            serviço, quem responde pelo IBS/CBS de cada etapa.</p>
+          <div class="clausula-texto" id="clausula-2">CLÁUSULA — DA RESPONSABILIDADE TRIBUTÁRIA
+Cada parte responde pelo recolhimento dos tributos (IBS, CBS e, quando aplicável, Imposto Seletivo) que lhe forem legalmente atribuídos em razão da natureza da operação objeto deste contrato, nos termos da Lei Complementar nº 214/2025, sem prejuízo das hipóteses de responsabilidade solidária expressamente previstas em lei, incluindo, quando cabível, o disposto no art. 24, §§ 4º e 5º, da referida Lei Complementar.</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-2">📋 Copiar</button>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>3. REGIME TRIBUTÁRIO DO FORNECEDOR (SIMPLES x REGULAR)</h3>
+          <p class="texto-corpo">Use em contrato de fornecimento — garante que o fornecedor informe o valor
+            recolhido, pra Riozen conseguir tomar o crédito certo (Art. 47, §9º).</p>
+          <div class="clausula-texto" id="clausula-3">CLÁUSULA — DO REGIME TRIBUTÁRIO DO FORNECEDOR
+O FORNECEDOR declara estar enquadrado no regime [Regular / Simples Nacional] do IBS e da CBS, comprometendo-se a informar à CONTRATANTE, a cada operação, o valor efetivamente recolhido a título desses tributos, para fins de apropriação do crédito a que a CONTRATANTE fizer jus, nos termos do art. 47, §9º, da Lei Complementar nº 214/2025.</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-3">📋 Copiar</button>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>4. SPLIT PAYMENT / PRAZO DE PAGAMENTO</h3>
+          <p class="texto-corpo">Use pra deixar claro que o valor líquido recebido pode vir menor que o valor
+            da operação, por causa da retenção automática do imposto.</p>
+          <div class="clausula-texto" id="clausula-4">CLÁUSULA — DO SPLIT PAYMENT
+As partes reconhecem que, nos termos dos arts. 32 e 33 da Lei Complementar nº 214/2025, o valor do IBS e da CBS incidente sobre os pagamentos realizados em decorrência deste contrato poderá ser retido e recolhido diretamente aos entes competentes no momento da liquidação financeira, de modo que o valor líquido recebido pela parte credora corresponderá ao valor da operação deduzido dos tributos retidos, não se caracterizando tal retenção como inadimplemento da parte devedora.</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-4">📋 Copiar</button>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>5. COMISSÃO DE INTERMEDIAÇÃO (CONSÓRCIO/FINANCIAMENTO)</h3>
+          <p class="texto-corpo">Use no contrato de parceria com Banco Toyota, Rodobens ou similar — deixa
+            claro o regime de caixa pra comissão de consórcio (Art. 204).</p>
+          <div class="clausula-texto" id="clausula-5">CLÁUSULA — DA COMISSÃO DE INTERMEDIAÇÃO
+A CONTRATADA fará jus à comissão de intermediação prevista no Anexo/Tabela deste contrato. Tratando-se de intermediação de consórcio, a base de cálculo dos tributos incidentes sobre essa comissão será apurada pelo regime de caixa, nos termos do art. 204 da Lei Complementar nº 214/2025, considerando-se auferida a receita somente no momento do efetivo recebimento dos valores pela CONTRATADA.</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-5">📋 Copiar</button>
+        </div>
+
+        <div class="ficha-secao">
+          <h3>6. BASE DE CÁLCULO EM VENDA DE VEÍCULO USADO</h3>
+          <p class="texto-corpo">Use em contrato de compra/venda de seminovo — registra que o imposto incide
+            só sobre a margem, não sobre o valor total.</p>
+          <div class="clausula-texto" id="clausula-6">CLÁUSULA — DA BASE DE CÁLCULO EM OPERAÇÃO COM BEM USADO
+Nas operações de compra e venda tendo por objeto veículo usado, nos termos dos arts. 171, 406 e 407 da Lei Complementar nº 214/2025, a base de cálculo do IBS e da CBS devidos pela CONTRATANTE, quando aplicável, corresponderá exclusivamente à diferença positiva entre o valor de revenda e o valor de aquisição do bem, observado o enquadramento legal cabível conforme a origem da aquisição (pessoa física ou pessoa jurídica).</div>
+          <button class="btn-copiar-clausula" data-alvo="clausula-6">📋 Copiar</button>
+        </div>
+
+        <div class="aviso-calibragem">
+          Essas cláusulas são ponto de partida — sempre revise com o Jurídico antes de incluir num contrato de
+          verdade. Os textos entre colchetes [assim] precisam ser preenchidos/ajustados caso a caso.
+        </div>
+        </div>
+
+        <div id="juridico-revisao-view" class="sub-conteudo" style="display:none;">
+        <p class="topo-sub">Checklist rápido pra revisar qualquer contrato à luz da Reforma Tributária — usa
+          junto com a Biblioteca de Cláusulas ao lado.</p>
+
+        <div class="ficha-secao">
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>O contrato atravessa 2026-2033?</b>
+            <span>Se o prazo passa pela transição da reforma, precisa da cláusula de revisão por alteração
+            tributária (cláusula 1) — as alíquotas vão mudar bastante nesse período.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>Está claro quem paga o quê?</b>
+            <span>Confirma se a responsabilidade por IBS/CBS de cada etapa está explícita (cláusula 2) —
+            principalmente se há possibilidade de responsabilidade solidária.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>Envolve fornecedor?</b>
+            <span>Confirma se o regime tributário dele (Simples ou Regular) está identificado no contrato, com
+            compromisso de informar o valor recolhido (cláusula 3).</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>Tem pagamento a prazo ou parcelado?</b>
+            <span>Confirma se o contrato já prevê que o split payment pode reter parte do valor na hora do
+            pagamento, sem isso ser inadimplemento (cláusula 4).</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>É contrato de comissão (consórcio/financiamento)?</b>
+            <span>Confirma se a base de cálculo pelo regime de caixa está prevista (cláusula 5).</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>Envolve veículo usado?</b>
+            <span>Confirma se a cláusula de base de cálculo sobre a margem está presente (cláusula 6), e se a
+            origem da compra (pessoa física ou jurídica) está identificada.</span></span>
+          </div>
+          <div class="checklist-item">
+            <span class="checklist-marca nao">☐</span>
+            <span class="checklist-texto"><b>Envolve venda com isenção (taxista/PCD)?</b>
+            <span>Usa o checklist específico na primeira aba — confirma fabricação nacional, motorização,
+            limite de preço e intervalo mínimo entre compras.</span></span>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  </div>
+
+  <script src="dados_ncm.js"></script>
+  <script src="dados_cclasstrib.js"></script>
+  <script src="dados_pis_cofins_monofasico.js"></script>
+  <script src="dados_imposto_seletivo.js"></script>
+  <script src="script.js"></script>
+  <script src="ferramentas.js"></script>
+</body>
+</html>
